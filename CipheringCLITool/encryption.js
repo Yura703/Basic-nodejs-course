@@ -1,5 +1,11 @@
 const resourses = require("./resourses")
 
+const ENCODING_ROT8 = 8;
+const DECODING_ROT8 = -8;
+const ALPHABET_COUNT = 52;
+//const ENCODING_ROT8 = 8;
+
+
 module.exports.coding = function(text, cipherName, encodingOrDecoding) {
     if (cipherName === "Caesar" && encodingOrDecoding) {
         return codingCaesar(text, -1);
