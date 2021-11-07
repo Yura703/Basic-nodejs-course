@@ -1,5 +1,6 @@
 const { Readable } = require('stream');
 const fs = require('fs');
+const path = require('path');
 
 class ReadStream extends Readable {
   constructor(filename) {
@@ -9,7 +10,7 @@ class ReadStream extends Readable {
   }
 
   _construct(callback) {
-    fs.open(this.filename, (err, fd) => {
+    fs.open(path.join(__dirname, this.filename), (err, fd) => {
       if (err) {
         callback(err);
       } else {
@@ -29,7 +30,7 @@ class ReadStream extends Readable {
       }
     });
   }
-  
+
   _destroy(err, callback) {
     if (this.fd) {
       fs.close(this.fd, (er) => callback(er || err));

@@ -6,7 +6,7 @@ const ALPHABET_COUNT = 52;
 //const ENCODING_ROT8 = 8;
 
 
-module.exports.coding = function(text, cipherName, encodingOrDecoding) {
+module.exports = function(text, cipherName, encodingOrDecoding) {
     if (cipherName === "Caesar" && encodingOrDecoding) {
         return codingCaesar(text, -1);
     }
@@ -28,6 +28,7 @@ module.exports.coding = function(text, cipherName, encodingOrDecoding) {
 }
 
 function codingCaesar(text, shift) {
+    //console.log(text);
     let encodeArray = text.split("").map(value => {
         let index = resourses.alphabet.indexOf(value);
         if (index !== -1) { 
