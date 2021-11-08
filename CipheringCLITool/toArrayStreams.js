@@ -7,11 +7,8 @@ const transformCaesarStream = require('./streams/TransformCaesarStream');
 const transformROT8Stream = require('./streams/TransformROT8Stream');
 const transformAtbashStream = require('./streams/TransformAtbashStream');
 const ParameterError = require('./errors/ParameterError');
+const { typeCipher } = require('./resourses');
 
-//translate to resourses.js
-const typeCipher = [
-    'C0', 'C1', 'R0', 'R1', 'A'
-];
 const ENCODING = true;
 const DECODING = false;
 const DEFAULT_INPUT = 'i';
@@ -21,7 +18,7 @@ function arrayStream() {
     let arrayStreams = [];
 
     arrayStreams[0] = parameters.input === DEFAULT_INPUT ? stdin : new readStream(getFilePath(true));  
-    
+        
     for (let i = 0; i < parameters.config.length; i++) {
         switch (parameters.config[i]) {
             case typeCipher[0]:
@@ -47,8 +44,8 @@ function arrayStream() {
             default:
                 throw new ParameterError("Error \"config\".");
         }   
-    }
-
+    }    
+    
     arrayStreams.push(parameters.output === DEFAULT_OUTPUT ? stdout : new writeStream(getFilePath(false)));
     
     return arrayStreams;

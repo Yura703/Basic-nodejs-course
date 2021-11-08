@@ -1,24 +1,25 @@
-const resourses = require("./resourses")
+const { alphabet } = require("./resourses")
 
+const ENCODING_CAESAR = -1;
+const DECODING_CAESAR = 1;
 const ENCODING_ROT8 = 8;
 const DECODING_ROT8 = -8;
-const ALPHABET_COUNT = 52;
-//const ENCODING_ROT8 = 8;
-
+const VALUE_NOT_FOUND = -1;
+const ALPHABET_COUNT = alphabet.length;
 
 module.exports = function(text, cipherName, encodingOrDecoding) {
     if (cipherName === "Caesar" && encodingOrDecoding) {
-        return codingCaesar(text, -1);
+        return codingCaesar(text, ENCODING_CAESAR);
     }
     if (cipherName === "Caesar" && !encodingOrDecoding) {
-        return codingCaesar(text, 1);
+        return codingCaesar(text, DECODING_CAESAR);
     }
 
     if (cipherName === "ROT-8" && encodingOrDecoding) {
-        return codingCaesar(text, 8);
+        return codingCaesar(text, ENCODING_ROT8);
     }
     if (cipherName === "ROT-8" && !encodingOrDecoding) {
-        return codingCaesar(text, -8);
+        return codingCaesar(text, DECODING_ROT8);
     }
 
     if (cipherName === "Atbash") {
@@ -28,24 +29,25 @@ module.exports = function(text, cipherName, encodingOrDecoding) {
 }
 
 function codingCaesar(text, shift) {
-    //console.log(text);
     let encodeArray = text.split("").map(value => {
-        let index = resourses.alphabet.indexOf(value);
-        if (index !== -1) { 
-            let newIndex = index + shift * 2;
-            if (newIndex < 0) {
-                newIndex += 52;
+        let index = alphabet.indexOf(value);
 
-                return resourses.alphabet[newIndex]
+        if (index !== VALUE_NOT_FOUND) { 
+            let newIndex = index + shift * 2;
+
+            if (newIndex < 0) {
+                newIndex += ALPHABET_COUNT;
+
+                return alphabet[newIndex]
             }
 
-            if (newIndex > 51) {
-                newIndex -= 52;
+            if (newIndex > (ALPHABET_COUNT - 1)) {
+                newIndex -= ALPHABET_COUNT;
 
-                return resourses.alphabet[newIndex]
+                return alphabet[newIndex]
             }  
             
-            return resourses.alphabet[newIndex]
+            return alphabet[newIndex]
         }  
 
         return value;
@@ -56,10 +58,12 @@ function codingCaesar(text, shift) {
 
 function codingAtbash(text) {
     let encodeArray = text.split("").map(value => {
-        let index = resourses.alphabet.indexOf(value);
-        if (index !== -1) {  
-            let newIndex = index % 2 === 0 ? 50 - index : 52 - index;
-            return resourses.alphabet[newIndex]
+        let index = alphabet.indexOf(value);
+
+        if (index !== VALUE_NOT_FOUND) {  
+            let newIndex = index % 2 === 0 ? (ALPHABET_COUNT - 2) - index : ALPHABET_COUNT - index;
+            
+            return alphabet[newIndex]
         }  
 
         return value;

@@ -1,8 +1,5 @@
 const { Readable } = require('stream');
 const fs = require('fs');
-const path = require('path');
-//const parameters = require('./validateParameters');
-
 class ReadStream extends Readable {
   constructor(filename) {
     super(filename);
