@@ -1,11 +1,6 @@
 const { stdout, stdin, stderr, exit } = process;
+const ParameterError = require('./errors/ParameterError');
 
-class ParameterError extends Error {
-  constructor(message) {
-    super(message);
-    this.name = "ParameterError";
-  }
-}
 
 const flags = {
     config: "c",
@@ -27,7 +22,7 @@ const parameters = process.argv.slice(2);
 
     let config = parameters[index + 1].split("-");
     for (let i = 0; i < config.length; i++) {
-        console.log(config[i]);
+       // console.log(config[i]);
         if (!(/^\s*[CR][10]\s*$|^\s*[A]+\s*$/.test(config[i]))) {
              throw new ParameterError("Опция \"config\" не соответствует требуемым параметрам.");
         }        
@@ -38,25 +33,24 @@ const parameters = process.argv.slice(2);
    }  
  } catch (error) {
      stderr.write(error.message + "Работа программы завершена.");
-     exit();
-     //exit();//сделать выход с ненулевым кодом состояния
+     exit(1);
  }
 
 
- function getParameters() {
-    
- 
-     for (let i = 0; i < argument.length; i++) {
-         if (argument[i] === "-c" || argument[i] === "--config") {
-             flags.config = argument[i + 1];
+ function getParameters() {  
+     for (let i = 0; i < parameters.length; i++) {
+         if (parameters[i] === "-c" || parameters[i] === "--config") {
+             flags.config = parameters[i + 1].split('-');
          };
-         if (argument[i] === "-i" || argument[i] === "--input") {
-             flags.input = argument[i + 1];
+         if (parameters[i] === "-i" || parameters[i] === "--input") {//сделать строку с полным адресом
+             flags.input = parameters[i + 1];
          };
-         if (argument[i] === "-o" || argument[i] === "--otput") {
-             flags.output = argument[i + 1];
+         if (parameters[i] === "-o" || parameters[i] === "--otput") {
+             flags.output = parameters[i + 1];
          };       
      }
+
+     return flags;
  }
 
- //getParameters();
+ module.exports = getParameters();

@@ -12,10 +12,10 @@ class TransformAtbashStream extends Transform {
       callback();
     }
 
-    _flush(callback){
-      this.push('\n');
-      callback();
-    }
+    // _flush(callback){
+    //   this.push('\n');
+    //   callback();
+    // }
   }
   
 module.exports = TransformAtbashStream;

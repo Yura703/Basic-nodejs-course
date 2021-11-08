@@ -1,16 +1,17 @@
 const { Readable } = require('stream');
 const fs = require('fs');
 const path = require('path');
+//const parameters = require('./validateParameters');
 
 class ReadStream extends Readable {
   constructor(filename) {
-    super();
+    super(filename);
     this.filename = filename;
     this.fd = null;
   }
 
   _construct(callback) {
-    fs.open(path.join(__dirname, this.filename), (err, fd) => {
+    fs.open(this.filename, (err, fd) => {
       if (err) {
         callback(err);
       } else {
@@ -40,4 +41,4 @@ class ReadStream extends Readable {
   }
 }
 
-module.exports = new ReadStream();
+module.exports = ReadStream;

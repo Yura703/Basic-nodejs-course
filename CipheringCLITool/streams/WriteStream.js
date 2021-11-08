@@ -1,14 +1,13 @@
 const { Writable } = require('stream');
 const fs = require('fs');
-
 class WriteStream extends Writable {
   constructor(filename) {
-    super();
+    super(filename);
     this.filename = filename;
   }
 
   _construct(callback) {
-    fs.open(this.filename, (err, fd) => {
+    fs.open(this.filename, 'a', (err, fd) => {
       if (err) {
         callback(err);
       } else {
@@ -23,6 +22,7 @@ class WriteStream extends Writable {
   }
 
   _destroy(err, callback) {
+    fs.write(this.fd, '\n', callback);
     if (this.fd) {
       fs.close(this.fd, (er) => callback(er || err));
     } else {
@@ -31,4 +31,4 @@ class WriteStream extends Writable {
   }
 }
 
-module.exports = new WriteStream();
+module.exports = WriteStream;
