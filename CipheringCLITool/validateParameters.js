@@ -1,7 +1,8 @@
 const { stderr, exit } = process;
-const ParameterError = require('./errors/ParameterError');
-const { flags } = require('./resourses');
 const fs = require('fs');
+const ParameterError = require('./errors/ParameterError');
+const FileError = require('./errors/FileError');
+const { flags } = require('./resourses');
 
 const parameters = process.argv.slice(2);
 
@@ -27,38 +28,56 @@ const parameters = process.argv.slice(2);
         throw new ParameterError("Options are duplicated.");
    }  
 } catch (error) {
-    stderr.write(error.message);
+    stderr.write('Error: ' + error.message);
     exit(1);
 }
 
-function getParameters() {  
+function getParameters() {      
     try {
         for (let i = 0; i < parameters.length; i++) {
+            const nextParameter = parameters[i + 1];
             if (parameters[i] === "-c" || parameters[i] === "--config") {
-                flags.config = parameters[i + 1].split('-');
+                flags.config = nextParameter.split('-');
             };
     
             if (parameters[i] === "-i" || parameters[i] === "--input") {
-                checkAvailabilityFile(parameters[i + 1]);               
-                flags.input = parameters[i + 1];  
+                checkAvailabilityFile(nextParameter); 
+                canRead(nextParameter);               
+                flags.input = nextParameter;  
             };
             
             if (parameters[i] === "-o" || parameters[i] === "--otput") {
-                checkAvailabilityFile(parameters[i + 1]);               
-                flags.output = parameters[i + 1];   
+                checkAvailabilityFile(nextParameter); 
+                canWrite(nextParameter);              
+                flags.output = nextParameter;   
             };       
         }  
 
         return flags;
     } catch (error) {
-        stderr.write(error.message);
+        stderr.write('Error: ' + error.message);
         exit(1);
     }    
 }
 
 function checkAvailabilityFile(pathFile) {
     if (!fs.existsSync(pathFile)) {
-        throw new ParameterError(`Not exist file ${pathFile}`);                    
+        throw new FileError(`Not exist file ${pathFile}`);                    
+    }
+}
+function canWrite(pathFile) {
+    try {
+        fs.accessSync(pathFile, fs.constants.W_OK)
+    } catch (error) {
+        throw new FileError(`File ${pathFile} is not wtitable`);         
+    }
+}
+
+function canRead(pathFile) {
+    try {
+        fs.accessSync(pathFile, fs.constants.R_OK)
+    } catch (error) {
+        throw new FileError(`File ${pathFile} is not reading`);         
     }
 }
 

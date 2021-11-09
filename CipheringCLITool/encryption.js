@@ -1,7 +1,7 @@
 const { alphabet } = require("./resourses")
 
-const ENCODING_CAESAR = -1;
-const DECODING_CAESAR = 1;
+const ENCODING_CAESAR = 1;
+const DECODING_CAESAR = -1;
 const ENCODING_ROT8 = 8;
 const DECODING_ROT8 = -8;
 const VALUE_NOT_FOUND = -1;
@@ -25,7 +25,6 @@ module.exports = function(text, cipherName, encodingOrDecoding) {
     if (cipherName === "Atbash") {
         return codingAtbash(text);
     }
-
 }
 
 function codingCaesar(text, shift) {
