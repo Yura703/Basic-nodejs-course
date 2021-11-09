@@ -230,8 +230,7 @@ $ node index -c "C1" -i "./input.txt"
 
 * При изменении порядка аргументов ошибка либо изменение результата выполнения кода не происходит.
   
-  ```bash
+```bash
 $ node index -o "./output.txt" -i "./input.txt" -c "C1-C1-R0-A"
 ```
-
 `Myxn xn nbdobm. Tbnnfzb ferlm "_" nhteru!`

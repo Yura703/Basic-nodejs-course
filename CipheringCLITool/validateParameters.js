@@ -12,7 +12,7 @@ const parameters = process.argv.slice(2);
     }
 
     const index = parameters.indexOf("-c" || "--config");
-    if (index === -1 || parameters.length === 1) {
+    if (index === -1 || parameters.length === 1 || parameters.length - 1 === index) {
         throw new ParameterError("Missing option \"config\".");
     }
 
@@ -27,7 +27,7 @@ const parameters = process.argv.slice(2);
         if (parameters.filter(item => item === stringFlags[i]).length > 1) {
             throw new ParameterError("Options are duplicated.");
         }         
-    }
+    }  
 
 } catch (error) {
     stderr.write('Error: ' + error.message);
@@ -43,6 +43,7 @@ function getParameters() {
             };
     
             if (parameters[i] === "-i" || parameters[i] === "--input") {
+                
                 checkAvailabilityFile(nextParameter); 
                 canRead(nextParameter);   
                 isFolder(nextParameter);           
@@ -65,8 +66,9 @@ function getParameters() {
 }
 
 function checkAvailabilityFile(pathFile) {
-    if (!fs.existsSync(pathFile)) {
-        throw new FileError(`Not exist file ${pathFile}`);                    
+    if (pathFile === '-i'|| pathFile === '--input' || pathFile === '-o' ||
+    pathFile === '--output' || pathFile === undefined || !fs.existsSync(pathFile)) {
+        throw new FileError(`Not exist file`);                    
     }
 }
 
@@ -94,4 +96,4 @@ function isFolder(pathFile) {
     }
 }
 
- module.exports = getParameters();
+module.exports = getParameters();
