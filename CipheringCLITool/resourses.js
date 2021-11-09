@@ -64,4 +64,10 @@ module.exports = {
         input: "i",
         output: "o",
     },
+
+    stringFlags: [
+        '-c',
+        '-i',
+        '-o'
+    ],
 }

@@ -2,7 +2,7 @@ const { stderr, exit } = process;
 const fs = require('fs');
 const ParameterError = require('./errors/ParameterError');
 const FileError = require('./errors/FileError');
-const { flags } = require('./resourses');
+const { flags, stringFlags } = require('./resourses');
 
 const parameters = process.argv.slice(2);
 
@@ -12,7 +12,7 @@ const parameters = process.argv.slice(2);
     }
 
     const index = parameters.indexOf("-c" || "--config");
-    if (index === -1) {
+    if (index === -1 || parameters.length === 1) {
         throw new ParameterError("Missing option \"config\".");
     }
 
@@ -21,12 +21,14 @@ const parameters = process.argv.slice(2);
         if (!(/^\s*[CR][10]\s*$|^\s*[A]+\s*$/.test(config[i]))) {
              throw new ParameterError("Option \"config\" does not meet the required parameters.");
         }        
+    }   
+    
+    for (let i = 0; i < stringFlags.length; i++) {
+        if (parameters.filter(item => item === stringFlags[i]).length > 1) {
+            throw new ParameterError("Options are duplicated.");
+        }         
     }
-   
-   if ((parameters.join("").match(/-i\s|--input/g) || []).length > 1 ||  (parameters.join("").match(/-o\s|--output/g) || []).length > 1 ||
-    (parameters.join("").match(/-c\s|--config/g) || []).length > 1) {
-        throw new ParameterError("Options are duplicated.");
-   }  
+
 } catch (error) {
     stderr.write('Error: ' + error.message);
     exit(1);
@@ -42,13 +44,15 @@ function getParameters() {
     
             if (parameters[i] === "-i" || parameters[i] === "--input") {
                 checkAvailabilityFile(nextParameter); 
-                canRead(nextParameter);               
+                canRead(nextParameter);   
+                isFolder(nextParameter);           
                 flags.input = nextParameter;  
             };
             
             if (parameters[i] === "-o" || parameters[i] === "--otput") {
                 checkAvailabilityFile(nextParameter); 
-                canWrite(nextParameter);              
+                canWrite(nextParameter);  
+                isFolder(nextParameter);              
                 flags.output = nextParameter;   
             };       
         }  
@@ -65,6 +69,7 @@ function checkAvailabilityFile(pathFile) {
         throw new FileError(`Not exist file ${pathFile}`);                    
     }
 }
+
 function canWrite(pathFile) {
     try {
         fs.accessSync(pathFile, fs.constants.W_OK)
@@ -78,6 +83,14 @@ function canRead(pathFile) {
         fs.accessSync(pathFile, fs.constants.R_OK)
     } catch (error) {
         throw new FileError(`File ${pathFile} is not reading`);         
+    }
+}
+
+function isFolder(pathFile) {
+    const is_folder = fs.lstatSync(pathFile).isDirectory();
+
+    if(is_folder) {
+        throw new FileError(`Path ${pathFile} is folder`); 
     }
 }
 
