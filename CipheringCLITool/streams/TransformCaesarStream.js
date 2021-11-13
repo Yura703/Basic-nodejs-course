@@ -1,6 +1,5 @@
 const { Transform } = require('stream');
 const coding = require('../encryption.js');
-
 class TransformCaesarStream extends Transform {
     constructor(directionEncryption) {
         super(directionEncryption);
@@ -12,11 +11,6 @@ class TransformCaesarStream extends Transform {
       this.push(encryptionString);
       callback();
     }
-
-    // _flush(callback){
-    //   this.push('\n');
-    //   callback();
-    // }
   }
   
 module.exports = TransformCaesarStream;

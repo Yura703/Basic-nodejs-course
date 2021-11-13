@@ -1,8 +1,8 @@
-const { Readable } = require('stream');
-const fs = require('fs');
+const { Readable } = require("stream");
+const fs = require("fs");
 class ReadStream extends Readable {
   constructor(filename) {
-    super(filename);
+    super();
     this.filename = filename;
     this.fd = null;
   }

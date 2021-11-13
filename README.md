@@ -105,7 +105,7 @@ $ node index -c "C1" -i "./test-folder" -o "./output.txt"
 
  `Error: Not exist file ./inputX.txt` or `Error: Not exist file ./outputX.txt` or `Error: Path ./test-folder is folder`
 
-File validateParameters.js str.61-63 
+File validateParameters.js str.103-105 
 ``` 
   catch (error) {
         stderr.write('Error: ' + error.message);
@@ -144,7 +144,7 @@ $ node index -c
 
 Объем валидации config:
 
-* file validateParameters.js str.19-22
+* file validateParameters.js str.25
 * проверяется, что config имеет формат {XY(-)}n
   
 ```bash
