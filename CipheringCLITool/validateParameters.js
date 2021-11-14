@@ -22,7 +22,7 @@ try {
 
   let config = parameters[index + 1].split("-");
   for (let i = 0; i < config.length; i++) {
-    if (!/^\s*[CR][10]\s*$|^\s*[A]+\s*$/.test(config[i])) {
+    if (!/^\s*[CR][10]\s*$|^\s*[A]{1}\s*$/.test(config[i])) {
       throw new ParameterError(
         'Option "config" does not meet the required parameters.'
       );
