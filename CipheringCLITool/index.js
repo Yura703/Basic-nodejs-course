@@ -1,5 +1,5 @@
 const { pipeline } = require("stream");
-const arrayStreams = require("./toArrayStreams");
+const arrayStreams = require("./src/toArrayStreams");
 
 pipeline(arrayStreams, (err) => {
   if (err) {

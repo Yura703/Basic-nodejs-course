@@ -1,5 +1,26 @@
-const encryption = require("../encryption");
+const { expect } = require("@jest/globals");
+const encryption = require("../src/encryption");
 
-test("Name test", () => {
-  expect(encryption("aaAA123", "Caesar", true)).toBe("bbBB123");
+describe("Проверка шифрования", () => {
+  test("Проверяем шифрование Цезарь", () => {
+    expect(encryption("aaAA123", "Caesar", true)).toBe("bbBB123");
+  });
+
+  test("Проверяем дешифрование Цезарь", () => {
+    expect(encryption("zZaA123+-*=фяйъисолд", "Caesar", false)).toBe(
+      "yYzZ123+-*=фяйъисолд"
+    );
+  });
+
+  test("Проверяем шифрование ROT-8", () => {
+    expect(encryption("acAC123", "ROT-8", true)).toBe("ikIK123");
+  });
+
+  test("Проверяем дешифрование ROT-8", () => {
+    expect(encryption("acAC123", "ROT-8", false)).toBe("suSU123");
+  });
+
+  test("Проверяем шифрование Atbash", () => {
+    expect(encryption("acAC123", "Atbash")).toBe("zxZX123");
+  });
 });

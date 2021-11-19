@@ -1,1 +1,1 @@
-const { validateConfig } = require("../../validate/validateConfig");
+const { validateConfig } = require("../../src/validate/validateConfig");

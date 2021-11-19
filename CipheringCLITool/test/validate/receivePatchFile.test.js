@@ -1,1 +1,1 @@
-const { receivePatchFile } = require("../../validate/receivePatchFile");
+const { receivePatchFile } = require("../../src/validate/receivePatchFile");
