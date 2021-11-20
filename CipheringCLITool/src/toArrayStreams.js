@@ -1,13 +1,5 @@
-const { stdout, stdin, stderr, exit } = process;
-const parameters = require("./validateParameters");
 const receivePatchFile = require("./validate/receivePatchFile");
-const {
-  ReadStream,
-  WriteStream,
-  TransformROT8Stream,
-  TransformAtbashStream,
-  TransformCaesarStream,
-} = require("./streams/streams");
+const { ReadStream, WriteStream, TransformROT8Stream, TransformAtbashStream, TransformCaesarStream } = require("./streams/streams");
 const ParameterError = require("./errors/ParameterError");
 const { typeCipher } = require("./resourses");
 
@@ -16,13 +8,10 @@ const DECODING = false;
 const DEFAULT_INPUT = "i";
 const DEFAULT_OUTPUT = "o";
 
-function arrayStream() {
+module.exports = function arrayStream(parameters) {
   let arrayStreams = [];
 
-  arrayStreams[0] =
-    parameters.input === DEFAULT_INPUT
-      ? stdin
-      : new ReadStream(receivePatchFile(true));
+  arrayStreams[0] = parameters.input === DEFAULT_INPUT ? process.stdin : new ReadStream(receivePatchFile(true));
 
   try {
     for (let i = 0; i < parameters.config.length; i++) {
@@ -52,17 +41,12 @@ function arrayStream() {
       }
     }
   } catch (error) {
-    stderr.write("Error: " + error.message);
-    exit(1);
+    process.stderr.write("Error: " + error.message);
+    process.exit(1);
   }
 
-  arrayStreams.push(
-    parameters.output === DEFAULT_OUTPUT
-      ? stdout
-      : new WriteStream(receivePatchFile(false))
-  );
+  arrayStreams.push(parameters.output === DEFAULT_OUTPUT ? process.stdout : new WriteStream(receivePatchFile(false)));
 
+  console.log(typeof arrayStreams[0]);
   return arrayStreams;
-}
-
-module.exports = arrayStream();
+};

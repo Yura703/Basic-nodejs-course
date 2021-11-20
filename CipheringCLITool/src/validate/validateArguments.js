@@ -3,23 +3,35 @@ const { stringFlags } = require("../resourses");
 
 module.exports = function validateArguments(parameters) {
   if (parameters.slice(-1)[0] === "-") {
-    throw new ParameterError("the line is not correct, ends with '-'.");
+    throw new ParameterError("the line is not correct, ends with -");
   }
 
   for (let i = 0; i < stringFlags.length; i++) {
-    let fullFlag = "";
+    let twinFlag = "";
 
     switch (stringFlags[i]) {
       case "-c":
-        fullFlag = "--config";
+        twinFlag = "--config";
+        break;
+
+      case "--config":
+        twinFlag = "-c";
         break;
 
       case "-o":
-        fullFlag = "--output";
+        twinFlag = "--output";
+        break;
+
+      case "--output":
+        twinFlag = "-o";
         break;
 
       case "-i":
-        fullFlag = "--input";
+        twinFlag = "--input";
+        break;
+
+      case "--input":
+        twinFlag = "-i";
         break;
 
       default:
@@ -27,10 +39,12 @@ module.exports = function validateArguments(parameters) {
     }
 
     if (
-      parameters.filter((item) => item === stringFlags[i] || item === fullFlag)
+      parameters.filter((item) => item === stringFlags[i] || item === twinFlag)
         .length > 1
     ) {
-      throw new ParameterError("Options are duplicated.");
+      throw new ParameterError(
+        `Error: You provided ${stringFlags[i]} argument more than once`
+      );
     }
   }
 };

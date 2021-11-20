@@ -3,12 +3,12 @@ const encryption = require("../src/encryption");
 
 describe("Проверка шифрования", () => {
   test("Проверяем шифрование Цезарь", () => {
-    expect(encryption("aaAA123", "Caesar", true)).toBe("bbBB123");
+    expect(encryption("aaAA123zZ", "Caesar", true)).toBe("bbBB123aA");
   });
 
   test("Проверяем дешифрование Цезарь", () => {
-    expect(encryption("zZaA123+-*=фяйъисолд", "Caesar", false)).toBe(
-      "yYzZ123+-*=фяйъисолд"
+    expect(encryption("BbzZaA123+-*=фяйъисолд", "Caesar", false)).toBe(
+      "AayYzZ123+-*=фяйъисолд"
     );
   });
 
@@ -21,6 +21,6 @@ describe("Проверка шифрования", () => {
   });
 
   test("Проверяем шифрование Atbash", () => {
-    expect(encryption("acAC123", "Atbash")).toBe("zxZX123");
+    expect(encryption("acAC123mNOpфыв", "Atbash")).toBe("zxZX123nMLkфыв");
   });
 });

@@ -1,10 +1,5 @@
 const { expect } = require("@jest/globals");
-const {
-  checkAvailabilityFile,
-  canWrite,
-  canRead,
-  isFolder,
-} = require("../../src/validate/validateFile");
+const { checkAvailabilityFile, canWrite, canRead, isFolder } = require("../../src/validate/validateFile");
 const fs = require("fs");
 //const { validateParameters } = require("../../validateParameters");
 
@@ -30,12 +25,14 @@ describe("Проверка файлов", () => {
   //   //spy.mockRestore();
   // });
   test("File is not writable", () => {
-    expect(() => canWrite(pathFileNotWritable)).toThrow(
-      `File ${pathFileNotWritable} is not wtitable`
-    );
+    const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
+
+    expect(() => canWrite(pathFileNotWritable)).toThrow(`File ${pathFileNotWritable} is not wtitable`);
   });
 
   test("File is writable", () => {
+    const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
+
     expect(() => canWrite(pathFile)).not.toThrow(
       //---------------------------
       `File ${pathFile} is not wtitable`
@@ -43,12 +40,14 @@ describe("Проверка файлов", () => {
   });
 
   test("File is not readable", () => {
-    expect(() => canRead(pathFileNotReadtable)).toThrow(
-      `File ${pathFileNotReadtable} is not reading`
-    );
+    const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
+
+    expect(() => canRead(pathFileNotReadtable)).toThrow(`File ${pathFileNotReadtable} is not reading`);
   });
 
   test("File is readable", () => {
+    const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
+
     expect(() => canRead(pathFile)).not.toThrow(
       //--------------------------------
       `File ${pathFile} is not reading`
@@ -56,21 +55,29 @@ describe("Проверка файлов", () => {
   });
 
   test("Path is folder", () => {
+    const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
+
     //не работает передача файла. Он не открывается, нет доступа
     expect(() => isFolder("../../aa")).toThrow(`Path ${pathFolder} is folder`); //----------------------------
   });
 
   test("Path is not folder", () => {
+    const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
+
     expect(() => isFolder(pathFile)).not.toThrow(`Path ${pathFile} is folder`);
   });
 
   const pathArray = ["-i", "--input", "-o", "--output"];
   //передать массив элементов
   test("check availability file", () => {
+    const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
+
     expect(() => checkAvailabilityFile(pathArray[0])).toThrow(Error);
   });
 
   test("path file id undefined", () => {
+    const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
+
     expect(() => checkAvailabilityFile(undefined)).toThrow(`Not exist file`);
   });
 });

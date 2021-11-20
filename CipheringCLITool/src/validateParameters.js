@@ -1,25 +1,12 @@
-const { stderr, exit } = process;
 const { flags, stringFlags } = require("./resourses");
 const { validateConfig, validateArguments } = require("./validate/validate");
-const {
-  checkAvailabilityFile,
-  canWrite,
-  canRead,
-  isFolder,
-} = require("./validate/validateFile");
+const { checkAvailabilityFile, canWrite, canRead, isFolder } = require("./validate/validateFile");
 
-const parameters = process.argv.slice(2);
-
-try {
-  validateConfig(parameters);
-  validateArguments(parameters);
-} catch (error) {
-  stderr.write("Error: " + error.message);
-  exit(1);
-}
-
-module.exports = (function getParameters() {
+module.exports = function getParameters(parameters) {
   try {
+    validateConfig(parameters);
+    validateArguments(parameters);
+
     for (let i = 0; i < parameters.length; i++) {
       const nextParameter = parameters[i + 1];
       if (parameters[i] === "-c" || parameters[i] === "--config") {
@@ -43,7 +30,7 @@ module.exports = (function getParameters() {
 
     return flags;
   } catch (error) {
-    stderr.write("Error: " + error.message);
-    exit(1);
+    process.stderr.write("Error: " + error.message);
+    process.exit(1);
   }
-})();
+};
