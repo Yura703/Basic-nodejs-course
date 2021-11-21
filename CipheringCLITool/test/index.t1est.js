@@ -1,6 +1,9 @@
 const { expect } = require("@jest/globals");
 const { spawn } = require("child_process");
 const index = require("../index");
+const parameters = require("../src/validateParameters");
+
+const mockExit = jest.spyOn(parameters, "getParameters").mockImplementation(() => {});
 
 describe("Проверка приложения в целом", () => {
   // const obj = {
@@ -15,11 +18,15 @@ describe("Проверка приложения в целом", () => {
   //   };
 
   test("should ", () => {
+    //const mockExit = jest.spyOn(process, "exit").mockImplementation(() => {});
+    const mockExit = jest.spyOn(parameters, "getParameters").mockImplementation(() => {});
+
     const cp = spawn("node", ["../index.js", "-c", "C1", "-i", "./input.txt"]);
 
     let res = "";
 
     cp.stdout.on("data", (chunk) => {
+      console.log(chunk.toString());
       res += chunk.toString();
     });
 

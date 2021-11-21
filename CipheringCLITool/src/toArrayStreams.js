@@ -47,6 +47,5 @@ module.exports = function arrayStream(parameters) {
 
   arrayStreams.push(parameters.output === DEFAULT_OUTPUT ? process.stdout : new WriteStream(receivePatchFile(false)));
 
-  console.log(typeof arrayStreams[0]);
   return arrayStreams;
 };

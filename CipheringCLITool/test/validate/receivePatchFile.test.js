@@ -1,7 +1,7 @@
 const { expect } = require("@jest/globals");
 const path = require("path");
 const receivePatchFile = require("../../src/validate/receivePatchFile");
-//const validateParameters = require("../../src/validateParameters");
+const validateParameters = require("../../src/validateParameters");
 
 const obj = {
   config: ["C0"],
@@ -12,33 +12,37 @@ const obj = {
 const pathInput = path.join(__dirname, "../../", obj.input);
 const pathOutput = path.join(__dirname, "../../", obj.output);
 
-//const myMock = jest.fn(() => obj);
-
-jest.mock("../../src/validateParameters", () => obj);
+jest.mock("../../src/validateParameters");
 
 describe("Формирование пути файла", () => {
-  test("aaaaa", () => {
+  validateParameters.mockImplementation(() => {
+    return obj;
+  });
+
+  test("Формируем input для относительного пути", () => {
     expect(receivePatchFile(true)).toBe(pathInput);
   });
 
-  test("aaaaa", () => {
+  test("Формируем output для относительного пути", () => {
     expect(receivePatchFile(false)).toBe(pathOutput);
   });
 });
-const obj1 = {
+const objAbsolut = {
   config: ["C0"],
   input: pathInput,
   output: pathOutput,
 };
-//jest.mock("../../src/validateParameters", () => obj1);
+
 describe("Name of the group", () => {
-  test("aaaaa", () => {
+  validateParameters.mockImplementation(() => {
+    return objAbsolut;
+  });
+
+  test("Формируем input для абсолютного пути", () => {
     expect(receivePatchFile(true)).toBe(pathInput);
   });
 
-  test("aaaaa", () => {
+  test("Формируем output для абсолютного пути", () => {
     expect(receivePatchFile(false)).toBe(pathOutput);
   });
 });
-
-//validateParameters.mockClear();
