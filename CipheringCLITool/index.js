@@ -1,9 +1,9 @@
 const { pipeline } = require("stream");
 const arrayStreams = require("./src/toArrayStreams");
 const parameters = require("./src/validateParameters");
+const paramArgv = require("./paramArgv");
 
-const param = process.argv.slice(2);
-console.log(param);
+const param = paramArgv;
 const array = arrayStreams(parameters(param));
 
 pipeline(array, (err) => {

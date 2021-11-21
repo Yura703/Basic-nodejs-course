@@ -20,15 +20,6 @@ class WriteStream extends Writable {
   _write(chunk, encoding, callback) {
     fs.write(this.fd, chunk, callback);
   }
-
-  _destroy(err, callback) {
-    fs.write(this.fd, "\n", callback);
-    if (this.fd) {
-      fs.close(this.fd, (er) => callback(er || err));
-    } else {
-      callback(err);
-    }
-  }
 }
 
 module.exports = WriteStream;

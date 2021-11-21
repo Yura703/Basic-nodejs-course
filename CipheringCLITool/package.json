@@ -16,8 +16,7 @@
     "test:coverage": "jest --coverage"
   },
   "jest": {
-    "verbose": true,
-    "collectCoverageFrom" : ["src/**/*.js"]
+    "verbose": true
   },
   "repository": {
     "type": "git",
