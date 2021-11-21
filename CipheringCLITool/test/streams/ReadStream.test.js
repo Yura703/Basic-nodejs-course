@@ -1,11 +1,11 @@
 const { expect } = require("@jest/globals");
 const ReadStream = require("../../src/streams/ReadStream");
+const path = require("path");
 
 describe("Проверка ReadStream", () => {
   test("ReadStream", async () => {
-    const rs = new ReadStream(
-      "e:\\RSSchool\\NodeJS\\Basic-nodejs-course\\CipheringCLITool\\input.txt"
-    );
+    const _path = path.join(__dirname, "../../input.txt");
+    const rs = new ReadStream(_path);
     await expect(
       new Promise((resolve) => {
         rs.on("data", (data) => {
